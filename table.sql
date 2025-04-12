@@ -1,0 +1,5 @@
+CREATE TABLE ss_easter (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    citizenid VARCHAR(64) NOT NULL UNIQUE,
+    collectedEggs JSON NOT NULL
+);
