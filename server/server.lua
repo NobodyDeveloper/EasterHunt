@@ -48,7 +48,13 @@ end)
 RegisterNetEvent('ss_easter:server:collectEgg', function(eggId)
     local source = source
     local player = exports.qbx_core:GetPlayer(source)
+    local playerCoords = GetEntityCoords(GetPlayerPed(source))
     local citizenid = player.PlayerData.citizenid
+    local eggLocation = Config.EggLocations[eggId].location
+    local distance = #(playerCoords - vector3(eggLocation.x, eggLocation.y, eggLocation.z))
+    if distance > 8.0 then
+        return
+    end
 
     -- Retrieve the current collected eggs from the database
     local result = exports.oxmysql:executeSync('SELECT collectedEggs FROM ss_easter WHERE citizenid = ?', { citizenid })
