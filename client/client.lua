@@ -1,7 +1,7 @@
 function spawnEggs()
     local collectedEggs = lib.callback.await('ss_easter:server:getCollectedEggs')
-    for _, egg in pairs(Config.EggLocations) do
-        if not collectedEggs[egg.id] then
+    for eggId, egg in pairs(Config.EggLocations) do
+        if not collectedEggs[eggId] then
             RequestModel(egg.model)
             while not HasModelLoaded(egg.model) do
                 Wait(100)
@@ -14,19 +14,17 @@ function spawnEggs()
             FreezeEntityPosition(eggObject, true)
             exports.ox_target:addLocalEntity(eggObject, {
                 {
-                    name = 'collect_egg' .. egg.id,
+                    name = 'collect_egg' .. eggId,
                     icon = 'fa-solid fa-egg',
                     label = 'Collect Egg',
                     onSelect = function()
-                        print("Egg collected with ID:", egg.id)
                         DeleteEntity(eggObject)
-                        print("Egg entity deleted:", eggObject)
-                        TriggerServerEvent('ss_easter:server:collectEgg', egg.id)
+                        TriggerServerEvent('ss_easter:server:collectEgg', eggId)
                     end
                 }
             })
         else
-            print("Egg already collected, skipping egg with ID:", egg.id)
+            print("Egg already collected, skipping egg with ID:", eggId)
         end
     end
 end

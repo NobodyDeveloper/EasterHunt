@@ -50,9 +50,17 @@ RegisterNetEvent('ss_easter:server:collectEgg', function(eggId)
     local player = exports.qbx_core:GetPlayer(source)
     local playerCoords = GetEntityCoords(GetPlayerPed(source))
     local citizenid = player.PlayerData.citizenid
+
+    -- Validate eggId
+    if not Config.EggLocations[eggId] then
+        exports.qbx_core:Notify(source, "Invalid egg!", "error")
+        return
+    end
+
     local eggLocation = Config.EggLocations[eggId].location
     local distance = #(playerCoords - vector3(eggLocation.x, eggLocation.y, eggLocation.z))
     if distance > 8.0 then
+        exports.qbx_core:Notify(source, "You are too far from the egg!", "error")
         return
     end
 
